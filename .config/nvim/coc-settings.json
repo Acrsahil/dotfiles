@@ -1,0 +1,4 @@
+{
+  "jedi.executable.command": "jedi-language-server",
+  "snippets.userSnippetsDirectory": "~/.config/nvim/snippets",
+}
