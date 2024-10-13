@@ -1,0 +1,135 @@
+set hidden true
+set shellopts '-eu'
+set shell zsh
+set ignorecase true
+set ifs "\n"
+set icons
+set period 1
+set drawbox true
+set relativenumber
+set previewer ~/.config/lf/lf_kitty_preview
+set cleaner ~/.config/lf/lf_kitty_clean
+
+cmd md ${{
+  printf "Directory Name: "
+  read ans
+  mkdir $ans
+}}
+cmd mkdir %mkdir -p "$@"
+
+
+cmd open ${{
+    case $(file --mime-type "$(readlink -f $f)" -b) in
+        application/vnd.openxmlformats-officedocument.spreadsheetml.sheet) localc $fx ;;
+        image/vnd.djvu|application/pdf|application/octet-stream|application/postscript) setsid -f zathura $fx >/dev/null 2>&1 ;;
+        text/*|application/json|inode/x-empty|application/javascript|text/html) nvim $fx;;
+        image/x-xcf) setsid -f gimp $f >/dev/null 2>&1 ;;
+        image/png|image/jpeg|image/gif|image/webp|image/avif|image/tiff|image/x-icon|image/svg+xml) setsid -f gimp $f >/dev/null 2>&1 ;;
+        image/*) rotdir $f | grep -i "\.\(png\|jpg\|jpeg\|gif\|webp\|avif\|tif\|ico\)\(_large\)*$" |
+            setsid -f nsxiv -aio 2>/dev/null | while read -r file; do
+                [ -z "$file" ] && continue
+                lf -remote "send select \"$file\""
+                lf -remote "send toggle"
+            done &
+            ;;
+        audio/*|video/x-ms-asf) mpv --audio-display=no $f ;;
+        video/*) setsid -f vlc $f >/dev/null 2>&1 ;; # Changed to open video in VLC
+        application/pgp-encrypted) $EDITOR $fx ;;
+        application/vnd.openxmlformats-officedocument.wordprocessingml.document|application/vnd.oasis.opendocument.text|application/vnd.openxmlformats-officedocument.spreadsheetml.sheet|application/octet-stream|application/vnd.oasis.opendocument.spreadsheet|application/vnd.oasis.opendocument.spreadsheet-template|application/vnd.openxmlformats-officedocument.presentationml.presentation|application/vnd.oasis.opendocument.presentation-template|application/vnd.oasis.opendocument.presentation|application/vnd.ms-powerpoint|application/vnd.oasis.opendocument.graphics|application/vnd.oasis.opendocument.graphics-template|application/vnd.oasis.opendocument.formula|application/vnd.oasis.opendocument.database) setsid -f libreoffice $fx >/dev/null 2>&1 ;;
+        *) for f in $fx; do setsid -f $OPENER $f >/dev/null 2>&1; done;;
+    esac
+    case $(file --mime-type "$(readlink -f $f)" -b) in
+        application/pdf) xdg-open $f ;;
+    esac
+}}
+
+
+
+
+cmd mkfile ${{
+  printf "File Name: "
+  read ans
+  nvim $ans
+}}
+cmd setwallpaper ${{
+    setwallpaper "$f"
+}}
+
+# Archive bindings
+cmd extract ${{
+  case "$f" in
+      *.zip) unzip "$f" ;;
+      *.tar.gz) tar -xzvf "$f" ;;
+      *.tar.bz2) tar -xjvf "$f" ;;
+      *.tar) tar -xvf "$f" ;;
+      *) echo "Unsupported format" ;;
+  esac
+}}
+
+cmd delete ${{
+    set -f
+    printf "$fx\n"
+    printf "delete?[y/n]"
+    read ans
+    [ "$ans" = "y" ] && rm -rf $fx
+}}
+
+# Trash bindings
+cmd trash ${{
+  files=$(printf "$fx" | tr '\n' ';')
+  while [ "$files" ]; do
+    file=${files%%;*}
+
+    trash-put "$(basename "$file")"
+    if [ "$files" = "$file" ]; then
+      files=''
+    else
+      files="${files#*;}"
+    fi
+  done
+}}
+
+cmd restore_trash ${{
+  trash-restore
+}}
+
+# Bindings
+map d
+map m
+
+map c $nvim "$f"
+
+map au unarchive
+map ae $wine "$f"
+
+# Basic Functions
+map . set hidden!
+map dT trash
+map dD delete
+map dr restore_trash
+map p paste
+map dd cut
+map y copy
+map <enter> open
+map R reload
+map mf mkfile
+map md mkdir
+map bg setwallpaper
+map C clear
+
+# Movement
+map gD cd ~/Documents
+map gd cd ~/Downloads
+map gp cd ~/Pictures
+map gc cd ~/.config
+map gr cd ~/repos
+map gv cd ~/Videos
+map gs cd ~/.local/bin
+map gt cd ~/.local/share/Trash/files
+
+
+
+
+# Enable selection mode
+#map V select
+
