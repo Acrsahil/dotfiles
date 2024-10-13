@@ -8,7 +8,32 @@
  #If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-# Function to create a new folder and add A.cpp to E.cpp files inside it
+# Function to create a new folder and add A.cpp to E.cpp files inside i
+
+
+
+
+# Define the file to keep track of terminal instances
+
+
+TERM_INSTANCE_FILE="/tmp/term_instance_count"
+
+# Create the file if it doesn't exist, and initialize the count
+if [ ! -f "$TERM_INSTANCE_FILE" ]; then
+    echo 1 > "$TERM_INSTANCE_FILE"
+else
+    # Read the current count
+    count=$(cat "$TERM_INSTANCE_FILE")
+    count=$((count+1)) # Increment count
+    echo $count > "$TERM_INSTANCE_FILE" # Save updated count
+
+    # Run the script if it's the second terminal instance
+    if [ "$count" -eq 2 ]; then
+        /home/window/hyprlandtoggle/./togglescript.sh
+    fi
+fi
+
+
 mkcd() {
     mkdir "$1" && cd "$1" || return
     if touch A.cpp B.cpp C.cpp D.cpp E.cpp; then
@@ -17,6 +42,8 @@ mkcd() {
         echo "Failed to create files."
     fi
 }
+alias "shutdown"='cp /home/window/hyprlandtoggle/toggle2.conf /home/window/.config/hypr/keybindings.conf && shutdown now'
+alias "reboot"='cp /home/window/hyprlandtoggle/toggle2.conf /home/window/.config/hypr/keybindings.conf && reboot'
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
@@ -70,7 +97,7 @@ alias usb='cd /run/media/window'
 alias config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
 
 
-alias gitpush='cd && ./addpush.sh'
+alias gitpush='cd && ./gitpush.sh'
 alias t='tmux'
 alias ta='tmux a'
 alias nano='nvim'
