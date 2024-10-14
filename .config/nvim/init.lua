@@ -1,6 +1,8 @@
 require "core"
 -- Set the leader key to " "
 
+vim.opt.shada = ""
+
 vim.cmd('set autoread')
 vim.cmd('autocmd CursorHold * checktime')
 
