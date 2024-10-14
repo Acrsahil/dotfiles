@@ -44,6 +44,7 @@ mkcd() {
 }
 alias "shutdown"='cp /home/window/hyprlandtoggle/toggle2.conf /home/window/.config/hypr/keybindings.conf && shutdown now'
 alias "reboot"='cp /home/window/hyprlandtoggle/toggle2.conf /home/window/.config/hypr/keybindings.conf && reboot'
+alias "draw"='/home/window/./open_excalidraw.sh'
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
