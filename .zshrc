@@ -94,7 +94,7 @@ function in {
 
 
 #tmux alias
-alias usb='cd /run/media/window'
+alias usb='cd ~/run/media/window'
 alias config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
 
 
@@ -352,3 +352,4 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+alias "ls"=lsd
