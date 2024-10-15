@@ -1,0 +1,5 @@
+[plugin]
+deps = [{ use = "dedukun/relative-motions", rev = "6aecfcd" }, { use = "yazi-rs/plugins:max-preview", rev = "e01bc16" }]
+
+[flavor]
+deps = [{ use = "PinThePenguine/sunset", rev = "181acd4" }, { use = "yazi-rs/flavors:catppuccin-frappe", rev = "b081fa9" }]
