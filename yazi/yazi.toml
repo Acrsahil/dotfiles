@@ -1,0 +1,14 @@
+[manager]
+show_hidden = true
+
+
+[opener]
+edit = [
+	{ run = '${EDITOR:-nvim} "$@"', desc = "$EDITOR", block = true, for = "unix" },
+  { run = 'sxiv "$1"',                     desc = "Open in sxiv", for = "linux" },
+	{ run = 'code %*',    orphan = true, desc = "code",           for = "windows" },
+	{ run = 'code -w %*', block = true,  desc = "code (block)",   for = "windows" },
+]
+
+
+
