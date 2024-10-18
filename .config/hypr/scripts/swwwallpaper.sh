@@ -61,7 +61,7 @@ Wall_Set()
     swww img "$wallSet" \
     --transition-bezier .43,1.19,1,.4 \
     --transition-type "$xtrans" \
-    --transition-duration 0.7 \
+    --transition-duration 0.5 \
     --transition-fps 60 \
     --invert-y \
     --transition-pos "$( hyprctl cursorpos )"

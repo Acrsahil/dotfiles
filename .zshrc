@@ -45,6 +45,12 @@ mkcd() {
 alias "shutdown"='cp /home/window/hyprlandtoggle/toggle2.conf /home/window/.config/hypr/keybindings.conf && shutdown now'
 alias "reboot"='cp /home/window/hyprlandtoggle/toggle2.conf /home/window/.config/hypr/keybindings.conf && reboot'
 alias "draw"='/home/window/./open_excalidraw.sh'
+
+alias ffplay='ffplay -nodisp -autoexit'
+
+
+alias ff='nvim $(fzf -m --preview="bat --color=always {}")'
+
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
@@ -356,3 +362,34 @@ unset __conda_setup
 # <<< conda initialize <<<
 
 alias "ls"=lsd
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+
+
+
+export FZF_DEFAULT_OPS="--extended"
+#export FZF_DEFAULT_COMMAND="fd --type f --hidden --follow --exclude .git --exclude node_modules --max-depth 6"
+
+
+
+
+export FZF_DEFAULT_COMMAND="fd . --type f --hidden --follow --exclude .git \
+                            --exclude node_modules \
+                            --exclude /mnt \
+                            --exclude /media \
+                            --exclude /proc \
+                            --exclude /sys \
+                            --exclude /var \
+                            --exclude /usr \
+                            --max-depth 5 \
+                            $HOME"
+
+
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+#export FZF_CTRL_T_OPTS="--preview=bat --color=always 'less {}' --bind shift-up:preview-page-up,shift-down:preview-page-down"
+export FZF_CTRL_T_OPTS="--preview='bat --color=always {}' --height=100% --bind 'shift-up:preview-page-up,shift-down:preview-page-down'"
+
+
+
+
