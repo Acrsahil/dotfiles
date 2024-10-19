@@ -1,11 +1,11 @@
 local plugins = {
-
+  -- nvim-dap-ui and dependencies
   {
     "rcarriga/nvim-dap-ui",
     event = "VeryLazy",
     dependencies = {
       "mfussenegger/nvim-dap",
-      "nvim-neotest/nvim-nio",  -- Ensure nvim-nio is listed as a dependency
+      "nvim-neotest/nvim-nio",  -- nvim-nio added as dependency here
     },
     config = function ()
       local dap = require("dap")
@@ -22,6 +22,8 @@ local plugins = {
       end
     end
   },
+  
+  -- Mason integration with nvim-dap
   {
     "jay-babu/mason-nvim-dap.nvim",
     event = "VeryLazy",
@@ -33,23 +35,16 @@ local plugins = {
       handlers = {},
     },
   },
+
+  -- nvim-dap plugin for debugging
   {
     "mfussenegger/nvim-dap",
     config = function (_, _)
       require("core.utils").load_mappings("dap")
     end
   },
-  {
-    "nvim-neotest/nvim-nio",  -- Added nvim-nio plugin
-    event = "VeryLazy",
-  },
-  {
-    "jose-elias-alvarez/null-ls.nvim",
-    ft = {"python"},
-    opts = function()
-      return require "custom.configs.null-ls"
-    end,
-  },
+
+  -- null-ls for Python (Consolidated into one)
   {
     "jose-elias-alvarez/null-ls.nvim",
     ft = {"python"},
@@ -58,40 +53,31 @@ local plugins = {
       return require "custom.configs.null-ls"
     end,
   },
+
+  -- LSP configuration with TypeScript Language Server setup
   {
     "neovim/nvim-lspconfig",
     config = function()
       require "plugins.configs.lspconfig"
       require "custom.configs.lspconfig"
-
+      
       -- Set up TypeScript language server
       require('lspconfig').ts_ls.setup {
         on_attach = function(client, bufnr)
-          -- Your custom on_attach logic here
+          -- Custom logic for attaching LSP
         end,
         capabilities = capabilities,
         flags = {
           debounce_text_changes = 150,
         },
-        -- Add any other necessary options here
       }
     end,
   },
+
+  -- Tmux Navigator plugin (Consolidated configuration)
   {
     "christoomey/vim-tmux-navigator",
     event = "VeryLazy",
-    config = function (_)
-    end
-  },
-  {
-    "christoomey/vim-tmux-navigator",
-    cmd = {
-      "TmuxNavigateLeft",
-      "TmuxNavigateDown",
-      "TmuxNavigateUp",
-      "TmuxNavigateRight",
-      "TmuxNavigatePrevious",
-    },
     keys = {
       { "<c-h>", "<cmd><C-U>TmuxNavigateLeft<cr>" },
       { "<c-j>", "<cmd><C-U>TmuxNavigateDown<cr>" },
@@ -100,6 +86,8 @@ local plugins = {
       { "<c-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>" },
     },
   },
+
+  -- Formatter plugin configuration
   {
     "mhartington/formatter.nvim",
     event = "VeryLazy",
@@ -107,24 +95,34 @@ local plugins = {
       return require "custom.configs.formatter"
     end
   },
+
+  -- Emmet for HTML and CSS
   {
     "mattn/emmet-vim",
     ft = {"html", "css"},
   },
+
+  -- Surround plugin for easy manipulation of surroundings
+  {
+    "kylechui/nvim-surround",
+    version = "*",
+    event = "VeryLazy",
+    config = function()
+      require("nvim-surround").setup({
+        -- Custom configuration or defaults
+      })
+    end
+  },
+
+  -- Mason for ensuring tools are installed
   {
     "williamboman/mason.nvim",
     opts = {
       ensure_installed = {
-        "black", "mypy",
-        "ruff",
-        "pyright",
-        "prettier",
-        "js-debug-adapter",
-        "eslint-lsp",
-        "clangd",
-        "clang-format",
-        "codelldb",
-        "typescript-language-server",  -- If you're still using it, ensure this is still relevant
+        "black", "mypy", "ruff",
+        "pyright", "prettier", "js-debug-adapter",
+        "eslint-lsp", "clangd", "clang-format",
+        "codelldb", "typescript-language-server",
         "stylelint"
       }
     }
@@ -132,5 +130,4 @@ local plugins = {
 }
 
 return plugins
-
 

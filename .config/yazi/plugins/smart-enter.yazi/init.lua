@@ -4,3 +4,5 @@ return {
 		ya.manager_emit(h and h.cha.is_dir and "enter" or "open", { hovered = true })
 	end,
 }
+
+

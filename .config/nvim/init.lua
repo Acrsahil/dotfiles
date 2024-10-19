@@ -17,13 +17,6 @@ vim.cmd('autocmd CursorHold * checktime')
 --
 
 -- Automatically reloads tmux plane
-vim.api.nvim_exec([[
-  augroup AutoReloadTmux
-    autocmd!
-    autocmd BufWritePost * :silent !tmux send-keys -t 0.1 'C-l' \| tmux send-keys -t 0.1 ':e %' Enter
-  augroup END
-]], false)
-
 
 
 

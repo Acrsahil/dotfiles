@@ -1,20 +1,26 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-# if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-#   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-# fi
-
- #If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-
-# Function to create a new folder and add A.cpp to E.cpp files inside i
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
 
 
+
+setopt IGNOREEOF
+# Where to store the history file
+HISTFILE=~/.zsh_history
+# Number of commands to remember
+HISTSIZE=10000
+# Number of commands saved in the file
+SAVEHIST=10000
+
+# Append to the history file instead of overwriting it
+setopt APPEND_HISTORY
+# Share history across multiple terminal sessions
+setopt SHARE_HISTORY
+# Save each command to the history file immediately
+setopt INC_APPEND_HISTORY
 
 
 # Define the file to keep track of terminal instances
-
 
 TERM_INSTANCE_FILE="/tmp/term_instance_count"
 
@@ -52,7 +58,9 @@ alias ffplay='ffplay -nodisp -autoexit'
 alias ff='nvim $(fzf -m --preview="bat --color=always {}")'
 
 # Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
+
+eval "$(starship init zsh)"
+export STARSHIP_CONFIG=~/.config/starship/starship.toml
 
 # Function to create a new folder and add A.cpp to E.cpp files inside it
 # Set name of the theme to load --- if set to "random", it will
@@ -169,176 +177,12 @@ alias vc='code --disable-gpu' # gui code editor
 export EDITOR=nvim
 export VISUAL=nvim
 
-# lf icons
-# export LF_ICONS="\
-# tw=:\
-# st=:\
-# ow=:\
-# dt=:\
-# di=:\
-# fi=:\
-# ln=:\
-# or=:\
-# ex=:\
-# *.c=:\
-# *.cc=:\
-# *.clj=:\
-# *.coffee=:\
-# *.cpp=:\
-# *.css=:\
-# *.d=:\
-# *.dart=:\
-# *.erl=:\
-# *.exs=:\
-# *.fs=:\
-# *.go=:\
-# *.h=:\
-# *.hh=:\
-# *.hpp=:\
-# *.hs=:\
-# *.html=:\
-# *.java=:\
-# *.jl=:\
-# *.js=:\
-# *.json=:\
-# *.lua=:\
-# *.md=:\
-# *.php=:\
-# *.pl=:\
-# *.pro=:\
-# *.py=:\
-# *.rb=:\
-# *.rs=:\
-# *.scala=:\
-# *.ts=:\
-# *.vim=:\
-# *.cmd=:\
-# *.ps1=:\
-# *.sh=:\
-# *.bash=:\
-# *.zsh=:\
-# *.fish=:\
-# *.tar=:\
-# *.tgz=:\
-# *.arc=:\
-# *.arj=:\
-# *.taz=:\
-# *.lha=:\
-# *.lz4=:\
-# *.lzh=:\
-# *.lzma=:\
-# *.tlz=:\
-# *.txz=:\
-# *.tzo=:\
-# *.t7z=:\
-# *.zip=:\
-# *.z=:\
-# *.dz=:\
-# *.gz=:\
-# *.lrz=:\
-# *.lz=:\
-# *.lzo=:\
-# *.xz=:\
-# *.zst=:\
-# *.tzst=:\
-# *.bz2=:\
-# *.bz=:\
-# *.tbz=:\
-# *.tbz2=:\
-# *.tz=:\
-# *.deb=:\
-# *.rpm=:\
-# *.jar=:\
-# *.war=:\
-# *.ear=:\
-# *.sar=:\
-# *.rar=:\
-# *.alz=:\
-# *.ace=:\
-# *.zoo=:\
-# *.cpio=:\
-# *.7z=:\
-# *.rz=:\
-# *.cab=:\
-# *.wim=:\
-# *.swm=:\
-# *.dwm=:\
-# *.esd=:\
-# *.jpg=:\
-# *.jpeg=:\
-# *.mjpg=:\
-# *.mjpeg=:\
-# *.gif=:\
-# *.bmp=:\
-# *.pbm=:\
-# *.pgm=:\
-# *.ppm=:\
-# *.tga=:\
-# *.xbm=:\
-# *.xpm=:\
-# *.tif=:\
-# *.tiff=:\
-# *.png=:\
-# *.svg=:\
-# *.svgz=:\
-# *.mng=:\
-# *.pcx=:\
-# *.mov=:\
-# *.mpg=:\
-# *.mpeg=:\
-# *.m2v=:\
-# *.mkv=:\
-# *.webm=:\
-# *.ogm=:\
-# *.mp4=:\
-# *.m4v=:\
-# *.mp4v=:\
-# *.vob=:\
-# *.qt=:\
-# *.nuv=:\
-# *.wmv=:\
-# *.asf=:\
-# *.rm=:\
-# *.rmvb=:\
-# *.flc=:\
-# *.avi=:\
-# *.fli=:\
-# *.flv=:\
-# *.gl=:\
-# *.dl=:\
-# *.xcf=:\
-# *.xwd=:\
-# *.yuv=:\
-# *.cgm=:\
-# *.emf=:\
-# *.ogv=:\
-# *.ogx=:\
-# *.aac=:\
-# *.au=:\
-# *.flac=:\
-# *.m4a=:\
-# *.mid=:\
-# *.midi=:\
-# *.mka=:\
-# *.mp3=:\
-# *.mpc=:\
-# *.ogg=:\
-# *.ra=:\
-# *.wav=:\
-# *.oga=:\
-# *.opus=:\
-# *.spx=:\
-# *.xspf=:\
-# *.pdf=:\
-# *.nix=:\
-# "
 export LC_ALL=en_US.UTF-8
 export EDITOR=nvim
 alias edx="./eDEX-UI.Linux.x86_64.AppImage"
 
 plugins=(git zsh-autosuggestions)
 
-source $ZSH/oh-my-zsh.sh
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -393,3 +237,65 @@ export FZF_CTRL_T_OPTS="--preview='bat --color=always {}' --height=100% --bind '
 
 
 
+source /usr/share/zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+
+
+
+
+
+source /usr/share/zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+
+fzf_open_in_nvim() {
+    selected_files=$(fd . --type f --hidden --follow \
+                           --exclude .git \
+                           --exclude node_modules \
+                           --exclude /mnt \
+                           --exclude /media \
+                           --exclude /proc \
+                           --exclude /sys \
+                           --exclude /var \
+                           --exclude /usr \
+                           --max-depth 5 | \
+                           fzf -m --preview="bat --style=plain --color=always --line-range=:500 {}")
+    if [[ -n "$selected_files" ]]; then
+        nvim $selected_files
+    fi
+    zle reset-prompt
+}
+zle -N fzf_open_in_nvim
+bindkey '^X' fzf_open_in_nvim
+
+
+
+
+
+zf_find_dir() {
+    local selected_dirs=$(fd . --type d --hidden --follow \
+                           --exclude .git \
+                           --exclude node_modules \
+                           --exclude /mnt \
+                           --exclude /media \
+                           --exclude /proc \
+                           --exclude /sys \
+                           --exclude /var \
+                           --exclude /usr \
+                           --max-depth 5 | \
+                           fzf -m --preview="tree -C {} | head -n 50")
+                               if [[ -n "$selected_dirs" ]]; then
+                                 cd "$selected_dirs" && whoami
+                                 zle reset-prompt
+                               fi
+                             }
+                             zle -N zf_find_dir
+                             bindkey '^D' zf_find_dir
+
+#autoload -U promptinit; promptinit
+#prompt pure
+
+export STARSHIP_CACHE=~/.starship/cache
+conda deactivate
+export STARSHIP_CACHE=~/.starship/cache
+#starship preset no-empty-icons -o ~/.config/starship.toml
