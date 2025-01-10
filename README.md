@@ -1,7 +1,7 @@
 
 <h1 align="center">
   <br>
- <img src="https://github.com/user-attachments/assets/63173b49-2b7b-4371-9fc2-d8956e9d6afb" alt="laa" width="200"</a>
+ <img src="https://github.com/user-attachments/assets/63173b49-2b7b-4371-9fc2-d8956e9d6afb" alt="laa" width="1000"</a>
   <br>
   Markdownify
   <br>
