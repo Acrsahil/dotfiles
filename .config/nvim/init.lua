@@ -1,3 +1,4 @@
+--@diagnostic disable: undefined-global
 require 'core.options' -- Load general options
 require 'core.keymaps' -- Load general keymaps
 
