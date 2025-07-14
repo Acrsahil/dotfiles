@@ -152,7 +152,7 @@ return {
           leave_dirs_open = false,
         },
         group_empty_dirs = false,
-        hijack_netrw_behavior = 'open_default',
+        hijack_netrw_behavior = 'disabled',
         use_libuv_file_watcher = false,
         window = {
           mappings = {
@@ -216,7 +216,8 @@ return {
     vim.api.nvim_create_autocmd('FileType', {
       pattern = 'neo-tree',
       callback = function()
-        vim.keymap.set('n', '<leader>e', ':Neotree toggle position=left<CR>', { buffer = true, noremap = true, silent = true })
+        vim.keymap.set('n', '<leader>e', ':Neotree toggle position=left<CR>',
+          { buffer = true, noremap = true, silent = true })
         vim.keymap.set('n', '\\', ':Neotree reveal<CR>', { buffer = true, noremap = true, silent = true })
       end,
     })

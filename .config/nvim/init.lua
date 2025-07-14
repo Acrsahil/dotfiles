@@ -2,6 +2,25 @@
 require 'core.options' -- Load general options
 require 'core.keymaps' -- Load general keymaps
 
+-- Enable line numbers and hybrid mode by default
+vim.opt.number = true
+vim.opt.relativenumber = true
+
+-- Auto toggle relativenumber on InsertEnter and InsertLeave
+vim.api.nvim_create_autocmd('InsertEnter', {
+  pattern = '*',
+  callback = function()
+    vim.wo.relativenumber = false
+  end,
+})
+
+vim.api.nvim_create_autocmd('InsertLeave', {
+  pattern = '*',
+  callback = function()
+    vim.wo.relativenumber = true
+  end,
+})
+
 -- Set up the Lazy plugin manager
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 
@@ -53,6 +72,9 @@ require('lazy').setup {
   require 'plugins.debug',
   require 'plugins.vim-tmux-navigator',
   --require 'plugins.toggleterm',
+  require 'plugins.yazi',
+  require 'plugins.oil',
+  require 'plugins.numbertoggle',
 }
 
 vim.cmd [[
