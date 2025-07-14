@@ -23,8 +23,8 @@ pacman -S stow
 First, check out the dotfiles repo in your $HOME directory using git
 
 ```
-  git clone git@github.com:Acrsahil/dotfiles.git
-  cd dotfiles
+git clone git@github.com:Acrsahil/dotfiles.git
+cd dotfiles
 ```
 
 ## Dependencies
@@ -32,11 +32,11 @@ First, check out the dotfiles repo in your $HOME directory using git
 Tpm (Tmux Plugins Manager)
 
 ```
-  git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ```
 
 then use GNU stow to create symlinks
 
 ```
-$ stow .
+stow .
 ```
