@@ -52,6 +52,7 @@ require('lazy').setup {
   require 'plugins.harpoon',
   require 'plugins.debug',
   require 'plugins.vim-tmux-navigator',
+  --require 'plugins.toggleterm',
 }
 
 vim.cmd [[
