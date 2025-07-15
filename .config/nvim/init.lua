@@ -55,7 +55,7 @@ vim.opt.rtp:prepend(lazypath)
 -- Plugin setup
 require('lazy').setup {
   require 'plugins.colortheme',
-  require 'plugins.neo-tree',
+  --require 'plugins.neo-tree',
   require 'plugins.bufferline',
   require 'plugins.lualine',
   require 'plugins.treesitter',
@@ -68,13 +68,14 @@ require('lazy').setup {
   require 'plugins.indent-blankline',
   require 'plugins.misc',
   require 'plugins.comment',
-  require 'plugins.harpoon',
   require 'plugins.debug',
   require 'plugins.vim-tmux-navigator',
   --require 'plugins.toggleterm',
   require 'plugins.yazi',
   require 'plugins.oil',
   require 'plugins.numbertoggle',
+  require 'plugins.harpoon',
+  require('plugins.yankvisual').setup(),
 }
 
 vim.cmd [[

@@ -29,8 +29,8 @@ return {
         mappings = {
           i = {
             ['<C-k>'] = actions.move_selection_previous, -- move to prev result
-            ['<C-j>'] = actions.move_selection_next,     -- move to next result
-            ['<C-l>'] = actions.select_default,          -- open file
+            ['<C-j>'] = actions.move_selection_next, -- move to next result
+            ['<C-l>'] = actions.select_default, -- open file
           },
           n = {
             ['q'] = actions.close,
@@ -43,7 +43,7 @@ return {
           hidden = true,
         },
         buffers = {
-          initial_mode = 'normal',
+          --initial_mode = 'normal',
           sort_lastused = true,
           -- sort_mru = true,
           mappings = {

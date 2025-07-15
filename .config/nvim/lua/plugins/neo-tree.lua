@@ -216,8 +216,7 @@ return {
     vim.api.nvim_create_autocmd('FileType', {
       pattern = 'neo-tree',
       callback = function()
-        vim.keymap.set('n', '<leader>e', ':Neotree toggle position=left<CR>',
-          { buffer = true, noremap = true, silent = true })
+        vim.keymap.set('n', '<leader>e', ':Neotree toggle position=left<CR>', { buffer = true, noremap = true, silent = true })
         vim.keymap.set('n', '\\', ':Neotree reveal<CR>', { buffer = true, noremap = true, silent = true })
       end,
     })
