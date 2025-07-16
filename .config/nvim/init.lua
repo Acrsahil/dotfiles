@@ -3,6 +3,8 @@ require 'core.options' -- Load general options
 require 'core.keymaps' -- Load general keymaps
 
 -- Enable line numbers and hybrid mode by default
+
+vim.opt.showtabline = 0
 vim.opt.number = true
 vim.opt.relativenumber = true
 
@@ -56,7 +58,7 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup {
   require 'plugins.colortheme',
   --require 'plugins.neo-tree',
-  require 'plugins.bufferline',
+  --require 'plugins.bufferline',
   require 'plugins.lualine',
   require 'plugins.treesitter',
   require 'plugins.telescope',
@@ -166,10 +168,51 @@ vim.api.nvim_exec(
   false
 )
 
-vim.api.nvim_create_autocmd('InsertLeave', {
-  callback = function()
-    if vim.bo.buftype == '' then -- only save normal buffers
-      vim.cmd 'silent! write'
-    end
+-- Setup catppuccin with highlight overrides
+require('catppuccin').setup {
+  flavour = 'mocha', -- or "latte", "frappe", "macchiato"
+  transparent_background = false, -- set true if you use transparency
+  term_colors = true,
+  integrations = {
+    native_lsp = {
+      enabled = true,
+      underlines = {
+        errors = { 'undercurl' },
+        hints = { 'undercurl' },
+        warnings = { 'undercurl' },
+        information = { 'undercurl' },
+      },
+    },
+    cmp = true,
+    gitsigns = true,
+    nvimtree = true,
+    treesitter = true,
+    telescope = true,
+    notify = false,
+    mini = false,
+  },
+  custom_highlights = function(colors)
+    return {
+      -- Line numbers
+      LineNr = { fg = colors.text }, -- Normal line number (peach)
+      CursorLineNr = { fg = colors.blue, bold = true }, -- Current line number (bright blue)
+
+      -- Cursor line background
+      CursorLine = { bg = colors.surface0 }, -- Subtle blueish background
+
+      -- Optional: make sign column (like git diff marks) look consistent
+      SignColumn = { bg = colors.base },
+
+      -- Optional: Match fold column color too
+      FoldColumn = { fg = colors.overlay0, bg = colors.base },
+    }
   end,
-})
+}
+
+-- Apply the colorscheme
+vim.cmd.colorscheme 'catppuccin'
+
+-- Set line numbers and cursor line
+vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.cursorline = true

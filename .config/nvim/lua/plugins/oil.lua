@@ -5,9 +5,27 @@ return {
     lazy = false,
     config = function()
       local oil = require 'oil'
+
       oil.setup {
         skip_confirm_for_simple_edits = true,
-        view_options = { show_hidden = true },
+        view_options = {
+          show_hidden = true,
+          is_always_visible = function(name)
+            return name == '..'
+          end,
+        },
+        float = {
+          padding = 2,
+          max_width = 80,
+          max_height = 40,
+          border = 'rounded',
+          title = function()
+            -- show current directory name + (..)
+            local cwd = vim.fn.expand '%:p:h:t' -- get name of current dir
+            return '󰉋  ' .. cwd .. ' (..)'
+          end,
+          title_pos = 'center',
+        },
       }
 
       vim.keymap.set('n', '<leader>e', function()
@@ -44,7 +62,7 @@ return {
             vim.cmd 'enew'
           end
         else
-          oil.open()
+          oil.open_float() -- show floating oil window with title
         end
       end, { desc = 'Toggle Oil open/close with buffer fallback' })
     end,
