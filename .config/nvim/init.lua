@@ -34,25 +34,6 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
   end
 end
 
-vim.api.nvim_set_hl(0, 'AutosaveMsg', { fg = '#00FF5F' }) -- nice neon green
-
-vim.api.nvim_create_autocmd('InsertLeave', {
-  callback = function()
-    if vim.bo.buftype == '' and vim.bo.modified then
-      vim.cmd 'silent! write'
-
-      local filename = vim.fn.expand '%:t'
-      local message = '✓ ' .. filename .. ' saved successfully '
-
-      vim.cmd('echohl AutosaveMsg | echo "' .. message .. '" | echohl None')
-
-      vim.defer_fn(function()
-        vim.cmd "echo ''"
-      end, 1500)
-    end
-  end,
-})
-
 vim.opt.rtp:prepend(lazypath)
 -- Plugin setup
 require('lazy').setup {
@@ -76,9 +57,11 @@ require('lazy').setup {
   require 'plugins.yazi',
   require 'plugins.oil',
   require 'plugins.numbertoggle',
+  require 'plugins.vimbe',
   require 'plugins.harpoon',
   require('plugins.yankvisual').setup(),
 }
+require 'config'
 
 vim.cmd [[
   augroup run_file
@@ -93,80 +76,6 @@ vim.cmd [[
     autocmd BufEnter *.html let @k=":w\<CR>:silent !chromium % \<CR>"
   augroup END
 ]]
-
-function InsertCppTemplate()
-  if vim.fn.line '$' == 1 and vim.fn.getline(1) == '' then
-    local templateLines = {
-      '#include <bits/stdc++.h>',
-      'using namespace std;',
-      '',
-      '#define F(i, n) for (int i = 0; i < n; i++)',
-      '#define vi vector<int>',
-      '#define ln long long int',
-      '#define test int t; cin >> t; while (t--)',
-      '#define ll long long',
-      '',
-      '#ifndef ONLINE_JUDGE',
-      '#define debug(x) cerr << #x << " -> "; _print(x); cerr << endl',
-      '#else',
-      '#define debug(x)',
-      '#endif',
-      '',
-      'void _print(int a) { cerr << a << " "; }',
-      'void _print(long long a) { cerr << a << " "; }',
-      'void _print(char a) { cerr << a << " "; }',
-      'void _print(string a) { cerr << a << " "; }',
-      'void _print(bool a) { cerr << a << " "; }',
-      'template <class T, class V> void _print(pair<T, V> p) { cerr << "{"; _print(p.first); cerr << ","; _print(p.second); cerr << "}"; }',
-      'template <class T> void _print(vector<T> v) { cerr << "[ "; for (T i : v) { _print(i); cerr << " "; } cerr << "]"; }',
-      'template <class T> void _print(set<T> v) { cerr << "[ "; for (T i : v) { _print(i); cerr << " "; } cerr << "]"; }',
-      'template <class T> void _print(multiset<T> v) { cerr << "[ "; for (T i : v) { _print(i); cerr << " "; } cerr << "]"; }',
-      'template <class T, class V> void _print(map<T, V> v) { cerr << "[ "; for (auto i : v) { _print(i); cerr << " "; } cerr << "]"; }',
-      'template <class T> void _print(pair<T, T> p) { cerr << "{"; _print(p.first); cerr << ","; _print(p.second); cerr << "}"; }',
-      'template <class T, class V> void _print(multimap<T, V> v) { cerr << "[ "; for (auto i : v) { _print(i); cerr << " "; } cerr << "]"; }',
-      'template <class T> void _print(unordered_set<T> v) { cerr << "[ "; for (T i : v) { _print(i); cerr << " "; } cerr << "]"; }',
-      'template <class T> void _print(unordered_multiset<T> v) { cerr << "[ "; for (T i : v) { _print(i); cerr << " "; } cerr << "]"; }',
-      'template <class T, class V> void _print(unordered_map<T, V> v) { cerr << "[ "; for (auto i : v) { _print(i); cerr << " "; } cerr << "]"; }',
-      '',
-      'void solve(){',
-      '   ',
-      '}',
-      'int main() {',
-      '#ifndef ONLINE_JUDGE',
-      '    freopen("input.txt","r",stdin);',
-      '    freopen("output.txt","w",stdout);',
-      '    freopen("Error.txt", "w", stderr);',
-      '#endif',
-      '',
-      'test{',
-      '   solve();',
-      '}',
-      '',
-      '    return 0;',
-      '}',
-    }
-
-    -- Insert template lines
-    vim.api.nvim_buf_set_lines(0, 0, -1, false, templateLines)
-    vim.api.nvim_buf_set_option(0, 'modified', false)
-
-    -- Move cursor to the line with "// Your C++ code here"
-    local cursorLine = #templateLines - 13
-    local cursorColumn = vim.fn.matchend(templateLines[cursorLine], '\\zs.') - 1
-    vim.api.nvim_win_set_cursor(0, { cursorLine + 1, cursorColumn })
-
-    vim.cmd 'normal! zt'
-    vim.cmd 'normal! zz'
-  end
-end
-
--- Command to create a new .cpp file with the template
-vim.api.nvim_exec(
-  [[
-  command! -nargs=1 -complete=file -bar Cpp edit <args>.cpp | lua InsertCppTemplate()
-]],
-  false
-)
 
 -- Setup catppuccin with highlight overrides
 require('catppuccin').setup {
@@ -216,3 +125,22 @@ vim.cmd.colorscheme 'catppuccin'
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.cursorline = true
+
+vim.api.nvim_set_hl(0, 'AutosaveMsg', { fg = '#00FF5F' }) -- nice neon green
+
+vim.api.nvim_create_autocmd('InsertLeave', {
+  callback = function()
+    if vim.bo.buftype == '' and vim.bo.modified then
+      vim.cmd 'silent! write'
+
+      local filename = vim.fn.expand '%:t'
+      local message = '✓ ' .. filename .. ' saved successfully '
+
+      vim.cmd('echohl AutosaveMsg | echo "' .. message .. '" | echohl None')
+
+      vim.defer_fn(function()
+        vim.cmd "echo ''"
+      end, 1500)
+    end
+  end,
+})

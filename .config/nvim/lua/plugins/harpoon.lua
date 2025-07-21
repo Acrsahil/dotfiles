@@ -26,10 +26,10 @@ return {
       vim.keymap.set('n', '<C-s>', function()
         harpoon:list():select(2)
       end, { desc = 'Harpoon: Go to 2' })
-      vim.keymap.set('n', '<C-t>', function()
+      vim.keymap.set('n', '<C-m>', function()
         harpoon:list():select(3)
       end, { desc = 'Harpoon: Go to 3' })
-      vim.keymap.set('n', '<C-d>', function()
+      vim.keymap.set('n', '<C-n>', function()
         harpoon:list():select(4)
       end, { desc = 'Harpoon: Go to 4' })
 

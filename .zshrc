@@ -56,7 +56,6 @@ alias "ht"="nmcli dev wifi hotspot ifname wlp2s0 ssid StarB password asdfghjkl"
 alias ffplay='ffplay -nodisp -autoexit'
 
 
-alias ff='nvim $(fzf -m --preview="bat --color=always {}")'
 
 # Path to your oh-my-zsh installation.
 
@@ -189,12 +188,11 @@ source /home/window/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 
 export FZF_DEFAULT_OPS="--extended"
-#export FZF_DEFAULT_COMMAND="fd --type f --hidden --follow --exclude .git --exclude node_modules --max-depth 6"
 
 
 
 
-export FZF_DEFAULT_COMMAND="fd . --type f --hidden --follow --exclude .git \
+export FZF_DEFAULT_COMMAND="fd . --type f  --follow --exclude .git \
                             --exclude node_modules \
                             --exclude /mnt \
                             --exclude /media \
@@ -202,13 +200,28 @@ export FZF_DEFAULT_COMMAND="fd . --type f --hidden --follow --exclude .git \
                             --exclude /sys \
                             --exclude /var \
                             --exclude /usr \
-                            --max-depth 5 \
+                            --max-depth 7 \
                             $HOME"
 
 
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-#export FZF_CTRL_T_OPTS="--preview=bat --color=always 'less {}' --bind shift-up:preview-page-up,shift-down:preview-page-down"
 export FZF_CTRL_T_OPTS="--preview='bat --color=always {}' --height=100% --bind 'shift-up:preview-page-up,shift-down:preview-page-down'"
+
+# 🧠 Command history search with Ctrl+R
+
+
+# History search (Ctrl+R) like Ctrl+T
+export FZF_CTRL_R_OPTS="
+  --height=100%
+  --layout=reverse
+  --border
+  --preview='echo {}' 
+  --bind 'shift-up:preview-page-up,shift-down:preview-page-down'
+"
+
+# Load fzf keybindings (ensure it's installed via your plugin manager or homebrew)
+export FZF_CTRL_R_OPTS="--height=100% --layout=reverse --border"
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 
 
@@ -390,3 +403,17 @@ source /home/window/Auto-Git/alias.sh
 
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/home/window/.lmstudio/bin"
+echo 'eval "$(zoxide init zsh)"' >> ~/.zshrc
+
+HISTSIZE=1000
+SAVEHIST=1000
+
+
+eval "$(zoxide init zsh)"
+eval "$(zoxide init zsh)"
+eval "$(zoxide init zsh)"
+eval "$(zoxide init zsh)"
+eval "$(zoxide init zsh)"
+eval "$(zoxide init zsh)"
+eval "$(zoxide init zsh)"
+eval "$(zoxide init zsh)"
