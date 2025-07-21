@@ -403,17 +403,7 @@ source /home/window/Auto-Git/alias.sh
 
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/home/window/.lmstudio/bin"
-echo 'eval "$(zoxide init zsh)"' >> ~/.zshrc
 
 HISTSIZE=1000
 SAVEHIST=1000
-
-
-eval "$(zoxide init zsh)"
-eval "$(zoxide init zsh)"
-eval "$(zoxide init zsh)"
-eval "$(zoxide init zsh)"
-eval "$(zoxide init zsh)"
-eval "$(zoxide init zsh)"
-eval "$(zoxide init zsh)"
 eval "$(zoxide init zsh)"
