@@ -13,7 +13,7 @@ set -o vi
 source /usr/share/zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 
 # ========== Prompt ==========
-ZSH_THEME="powerlevel10k/powerlevel10k"
+#ZSH_THEME="powerlevel10k/powerlevel10k"
 eval "$(starship init zsh)"
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
 export STARSHIP_CACHE=~/.starship/cache
@@ -44,7 +44,6 @@ source /home/window/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # ========== Aliases ==========
 alias shutdown='cp /home/window/hyprlandtoggle/toggle2.conf /home/window/.config/hypr/keybindings.conf && shutdown now'
 alias reboot='cp /home/window/hyprlandtoggle/toggle2.conf /home/window/.config/hypr/keybindings.conf && reboot'
-alias draw='/home/window/./open_excalidraw.sh'
 alias ht="nmcli dev wifi hotspot ifname wlp2s0 ssid StarB password asdfghjkl"
 alias ffplay='ffplay -nodisp -autoexit'
 alias usb='cd ~/run/media/window'
@@ -54,18 +53,6 @@ alias nano='nvim'
 alias bnvim='bash -c "nvim"'
 alias t='tmux'
 alias ta='tmux a'
-alias cppp='tmux select-window -t 1'
-alias cpp='tmux a -t First && cppp'
-alias maths='tmux select-window -t 5'
-alias math='tmux a -t First && maths'
-alias bt='cd CODE-HUB/100_Days_DSA/DSA-CODE-Bit/'
-alias bit='bt && nvim'
-alias pyy='tmux select-window -t 2'
-alias py='tmux a -t First && pyy'
-alias LD='tmux select-window -t 3'
-alias ll='tmux a -t First && LD'
-alias WD='tmux select-window -t 0'
-alias html='tmux a -t First && WD'
 alias r='ranger'
 alias data='cd ~/codehub/Data_Science_Project/notebookfile/ && jupyter lab'
 alias ip='echo $(ifconfig enp4s0 | grep "inet " | awk "{print \$2}")'
@@ -230,5 +217,14 @@ conda deactivate
 # Load zoxide
 eval "$(zoxide init zsh)"
 
+# All other alias for Auto-Git
 
-source /home/window/Auto-Git/alias.sh
+
+# bindkey -s ^t "tmux-sessionizer\n"
+# bindkey -s '\ea' "tmux-sessionizer -s 0\n"
+# bindkey -s '\es' "tmux-sessionizer -s 1\n"
+# bindkey -s '\ef' "tmux-sessionizer -s 2\n"
+# bindkey -s '\eg' "tmux-sessionizer -s 3\n"
+bindkey -r '^T'
+
+source /home/window/codehub/Auto-Git/alias.sh

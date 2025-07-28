@@ -1,6 +1,7 @@
 --@diagnostic disable: undefined-global
-require 'core.options' -- Load general options
+
 require 'core.keymaps' -- Load general keymaps
+require 'core.options'
 
 -- Enable line numbers and hybrid mode by default
 
@@ -79,7 +80,7 @@ vim.cmd [[
 
 -- Setup catppuccin with highlight overrides
 require('catppuccin').setup {
-  flavour = 'mocha', -- or "latte", "frappe", "macchiato"
+  flavour = 'mocha',              -- or "latte", "frappe", "macchiato"
   transparent_background = false, -- set true if you use transparency
   term_colors = true,
   integrations = {
@@ -103,7 +104,7 @@ require('catppuccin').setup {
   custom_highlights = function(colors)
     return {
       -- Line numbers
-      LineNr = { fg = colors.text }, -- Normal line number (peach)
+      LineNr = { fg = colors.text },                    -- Normal line number (peach)
       CursorLineNr = { fg = colors.blue, bold = true }, -- Current line number (bright blue)
 
       -- Cursor line background
@@ -144,3 +145,9 @@ vim.api.nvim_create_autocmd('InsertLeave', {
     end
   end,
 })
+
+vim.keymap.set('n', '<C-t>', '<cmd>silent !tmux neww tmux-sessionizer<CR>')
+vim.keymap.set('n', '<M-a>', '<cmd>silent !tmux neww tmux-sessionizer -s 0<CR>')
+vim.keymap.set('n', '<M-s>', '<cmd>silent !tmux neww tmux-sessionizer -s 1<CR>')
+vim.keymap.set('n', '<M-f>', '<cmd>silent !tmux neww tmux-sessionizer -s 2<CR>')
+vim.keymap.set('n', '<M-g>', '<cmd>silent !tmux neww tmux-sessionizer -s 3<CR>')
