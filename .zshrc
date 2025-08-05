@@ -69,6 +69,7 @@ alias vc='code --disable-gpu'
 alias gitpush='cd && ./gitpush.sh'
 alias drun="./drun.sh"
 alias dcode="./dcode.sh"
+alias sshaws="cd ~/Downloads && ssh -i "mykeypair.pem" ubuntu@ec2-34-224-99-240.compute-1.amazonaws.com"
 
 # ========== Terminal Instance Script ==========
 TERM_INSTANCE_FILE="/tmp/term_instance_count"
@@ -228,3 +229,23 @@ eval "$(zoxide init zsh)"
 bindkey -r '^T'
 
 source /home/window/codehub/Auto-Git/alias.sh
+
+
+export ANDROID_SDK_ROOT=$HOME/Android/Sdk
+export ANDROID_HOME=$ANDROID_SDK_ROOT
+
+export PATH=$PATH:$ANDROID_SDK_ROOT/emulator
+export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
+export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin
+export PATH=$PATH:$ANDROID_SDK_ROOT/tools
+export PATH=$PATH:$ANDROID_SDK_ROOT/tools/bin
+
+export CHROME_EXECUTABLE=/usr/bin/google-chrome-stable
+
+export PATH="$HOME/flutter/bin:$HOME/flutter/bin/cache/dart-sdk/bin:$PATH"alias runapp='env QT_QPA_PLATFORM=xcb emulator -avd mydevice -gpu swiftshader_indirect'
+alias runapp='env QT_QPA_PLATFORM=xcb LIBGL_ALWAYS_SOFTWARE=1 emulator -avd Pixel_9_Pro_XL -gpu swiftshader_indirect'
+export PATH="$PATH":"$HOME/.pub-cache/bin"
+
+
+
+

@@ -10,6 +10,7 @@ return {
       'saghen/blink.cmp',
     },
     config = function()
+      -- Keymaps and LSP attach handlers
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
         callback = function(event)
@@ -61,6 +62,7 @@ return {
         end,
       })
 
+      -- Diagnostics config
       vim.diagnostic.config {
         severity_sort = true,
         float = { border = 'rounded', source = 'if_many' },
@@ -82,18 +84,20 @@ return {
         } or {},
       }
 
+      -- Capabilities for completion
       local capabilities = vim.tbl_deep_extend(
         'force',
         vim.lsp.protocol.make_client_capabilities(),
         (pcall(require, 'blink.cmp') and require('blink.cmp').get_lsp_capabilities()) or {}
       )
 
+      -- LSP servers config
       local servers = {
         lua_ls = {
           settings = {
             Lua = {
               diagnostics = {
-                globals = { 'vim' }, -- <-- Tell Lua LS that `vim` is a global
+                globals = { 'vim' },
                 disable = { 'missing-fields' },
               },
               runtime = { version = 'LuaJIT' },
@@ -116,8 +120,21 @@ return {
         emmet_ls = {
           filetypes = { 'html', 'css', 'javascript', 'typescriptreact', 'javascriptreact' },
         },
+
+        dartls = {
+          cmd = { '/opt/dart-sdk/bin/dart', 'language-server', '--protocol=lsp' }, -- fixed absolute path here
+          filetypes = { 'dart' },
+          root_dir = require('lspconfig.util').root_pattern('pubspec.yaml', '.git'),
+          init_options = {
+            closingLabels = true,
+            outline = true,
+            flutterOutline = true,
+          },
+          capabilities = capabilities,
+        },
       }
 
+      -- Tools to ensure installed with Mason
       local tools = {
         'stylua',
         'prettier',
@@ -128,6 +145,7 @@ return {
         ensure_installed = tools,
       }
 
+      -- Setup mason-lspconfig and lspconfig handlers
       require('mason-lspconfig').setup {
         automatic_installation = true,
         handlers = {

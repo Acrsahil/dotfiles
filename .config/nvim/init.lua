@@ -41,7 +41,9 @@ require('lazy').setup {
   require 'plugins.colortheme',
   --require 'plugins.neo-tree',
   --require 'plugins.bufferline',
+
   require 'plugins.lualine',
+  require 'plugins.dadbod',
   require 'plugins.treesitter',
   require 'plugins.telescope',
   require 'plugins.lsp',
@@ -54,6 +56,7 @@ require('lazy').setup {
   require 'plugins.comment',
   require 'plugins.debug',
   require 'plugins.vim-tmux-navigator',
+  require 'plugins.flutter',
   --require 'plugins.toggleterm',
   require 'plugins.yazi',
   require 'plugins.oil',
@@ -151,3 +154,24 @@ vim.keymap.set('n', '<M-a>', '<cmd>silent !tmux neww tmux-sessionizer -s 0<CR>')
 vim.keymap.set('n', '<M-s>', '<cmd>silent !tmux neww tmux-sessionizer -s 1<CR>')
 vim.keymap.set('n', '<M-f>', '<cmd>silent !tmux neww tmux-sessionizer -s 2<CR>')
 vim.keymap.set('n', '<M-g>', '<cmd>silent !tmux neww tmux-sessionizer -s 3<CR>')
+vim.keymap.set('n', '<leader>du', ':DBUIToggle<CR>', { desc = 'Toggle DB UI' })
+vim.keymap.set('n', '<leader>df', ':DBUIFindBuffer<CR>', { desc = 'Find DB buffer' })
+vim.api.nvim_create_autocmd('BufWritePre', {
+  pattern = '*.dart',
+  callback = function()
+    vim.lsp.buf.format()
+  end,
+})
+
+vim.api.nvim_create_autocmd('BufWritePost', {
+  pattern = '*.dart',
+  callback = function()
+    -- Check if Flutter tools client is attached
+    for _, client in ipairs(vim.lsp.get_active_clients { bufnr = 0 }) do
+      if client.name == 'dartls' then
+        vim.cmd 'FlutterReload'
+        break
+      end
+    end
+  end,
+})
