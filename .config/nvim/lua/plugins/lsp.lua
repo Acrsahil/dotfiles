@@ -6,7 +6,7 @@ return {
       { 'williamboman/mason.nvim', opts = {} },
       'williamboman/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
-      { 'j-hui/fidget.nvim',       opts = {} },
+      { 'j-hui/fidget.nvim', opts = {} },
       'saghen/blink.cmp',
     },
     config = function()
@@ -114,15 +114,34 @@ return {
           },
         },
 
-        html = {},
+        -- Django/Python LSP Servers
+        pyright = {
+          settings = {
+            python = {
+              analysis = {
+                autoSearchPaths = true,
+                diagnosticMode = 'workspace',
+                useLibraryCodeForTypes = true,
+                typeCheckingMode = 'basic',
+                autoImportCompletions = true,
+              },
+            },
+          },
+        },
+
+        -- HTML with Django template support
+        html = {
+          filetypes = { 'html', 'htmldjango' },
+        },
+
         cssls = {},
         tsserver = {},
         emmet_ls = {
-          filetypes = { 'html', 'css', 'javascript', 'typescriptreact', 'javascriptreact' },
+          filetypes = { 'html', 'css', 'javascript', 'typescriptreact', 'javascriptreact', 'htmldjango' },
         },
 
         dartls = {
-          cmd = { '/opt/dart-sdk/bin/dart', 'language-server', '--protocol=lsp' }, -- fixed absolute path here
+          cmd = { '/opt/dart-sdk/bin/dart', 'language-server', '--protocol=lsp' },
           filetypes = { 'dart' },
           root_dir = require('lspconfig.util').root_pattern('pubspec.yaml', '.git'),
           init_options = {
@@ -139,6 +158,12 @@ return {
         'stylua',
         'prettier',
         'eslint_d',
+        -- Django/Python tools
+        'pyright',
+        'djlint',
+        'black',
+        'isort',
+        'flake8',
       }
 
       require('mason-tool-installer').setup {
@@ -156,6 +181,28 @@ return {
           end,
         },
       }
+
+      -- Auto-detect Django templates
+      vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
+        pattern = {
+          '*/templates/*.html',
+          '**/templates/**/*.html',
+        },
+        callback = function()
+          vim.bo.filetype = 'htmldjango'
+        end,
+      })
+
+      -- Python/Django specific settings
+      vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
+        pattern = { '*.py', 'manage.py', 'requirements*.txt' },
+        callback = function()
+          vim.bo.tabstop = 4
+          vim.bo.shiftwidth = 4
+          vim.bo.softtabstop = 4
+          vim.bo.expandtab = true
+        end,
+      })
     end,
   },
 }

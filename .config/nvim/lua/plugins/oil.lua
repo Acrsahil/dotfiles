@@ -27,7 +27,7 @@ return {
         },
       }
 
-      -- ✨ ESC to quit Oil
+      -- ESC to quit Oil
       vim.api.nvim_create_autocmd('FileType', {
         pattern = 'oil',
         callback = function()
@@ -35,44 +35,28 @@ return {
         end,
       })
 
-      -- Toggle oil with <leader>e
+      -- Keep track of last non-Oil buffer
+      local last_file_buf = nil
+
+      vim.api.nvim_create_autocmd({ 'BufEnter' }, {
+        callback = function()
+          if vim.bo.filetype ~= 'oil' then
+            last_file_buf = vim.api.nvim_get_current_buf()
+          end
+        end,
+      })
+
+      -- Toggle Oil
       vim.keymap.set('n', '<leader>e', function()
         if vim.bo.filetype == 'oil' then
-          if #vim.api.nvim_tabpage_list_wins(0) > 1 then
-            vim.cmd 'close'
-          end
-
-          local found_buf = nil
-          local empty_buf = nil
-          for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-            if
-                vim.api.nvim_buf_is_loaded(buf)
-                and vim.api.nvim_buf_get_option(buf, 'buflisted')
-                and vim.api.nvim_buf_get_name(buf) ~= ''
-                and vim.api.nvim_buf_get_option(buf, 'filetype') ~= 'oil'
-            then
-              found_buf = buf
-            elseif
-                vim.api.nvim_buf_is_loaded(buf)
-                and vim.api.nvim_buf_get_option(buf, 'buflisted')
-                and vim.api.nvim_buf_get_name(buf) == ''
-                and vim.api.nvim_buf_get_option(buf, 'filetype') ~= 'oil'
-            then
-              empty_buf = buf
-            end
-          end
-
-          if found_buf then
-            vim.cmd('buffer ' .. found_buf)
-          elseif empty_buf then
-            vim.cmd('buffer ' .. empty_buf)
-          else
-            vim.cmd 'enew'
+          vim.cmd 'close'
+          if last_file_buf and vim.api.nvim_buf_is_valid(last_file_buf) then
+            vim.api.nvim_set_current_buf(last_file_buf)
           end
         else
           oil.open_float()
         end
-      end, { desc = 'Toggle Oil open/close with buffer fallback' })
+      end, { desc = 'Toggle Oil without switching files' })
     end,
   },
 }

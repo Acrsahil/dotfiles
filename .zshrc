@@ -70,6 +70,8 @@ alias gitpush='cd && ./gitpush.sh'
 alias drun="./drun.sh"
 alias dcode="./dcode.sh"
 alias sshaws="cd ~/Downloads && ssh -i "mykeypair.pem" ubuntu@ec2-34-224-99-240.compute-1.amazonaws.com"
+alias nano="nvim"
+alias 'sudo nano'="nvim"
 
 # ========== Terminal Instance Script ==========
 TERM_INSTANCE_FILE="/tmp/term_instance_count"
@@ -246,6 +248,48 @@ export PATH="$HOME/flutter/bin:$HOME/flutter/bin/cache/dart-sdk/bin:$PATH"alias 
 alias runapp='env QT_QPA_PLATFORM=xcb LIBGL_ALWAYS_SOFTWARE=1 emulator -avd Pixel_9_Pro_XL -gpu swiftshader_indirect'
 export PATH="$PATH":"$HOME/.pub-cache/bin"
 
+# Launch Pixel 9 Pro XL with software GPU
+alias runpixel='QT_QPA_PLATFORM=xcb LIBGL_ALWAYS_SOFTWARE=1 emulator -avd Pixel_9_Pro_XL -gpu swiftshader_indirect -scale 1.5'
+
+# Launch Pixel 9 Pro XL Lite with software GPU
+alias runpixel_lite='QT_QPA_PLATFORM=xcb LIBGL_ALWAYS_SOFTWARE=1 emulator -avd Pixel_9_Pro_XL_Lite -gpu swiftshader_indirect -scale 1.5'
+
+# Launch Medium Phone emulator with software GPU
+alias runmedium='QT_QPA_PLATFORM=xcb LIBGL_ALWAYS_SOFTWARE=1 emulator -avd Medium_Phone -gpu swiftshader_indirect -scale 1.5'
+
+alias pyserver='cd ~/codehub/Mount_Bill/ && source env/bin/activate && cd ~/codehub/Mount_Bill//mount_django && python manage.py runserver'
 
 
 
+
+
+
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+
+
+
+# Auto-load virtual environments
+function chpwd() {
+    # Deactivate if we left the venv directory
+    if [[ -n "$VIRTUAL_ENV" ]] && [[ "$(pwd)" != "$(dirname "$VIRTUAL_ENV")"* ]]; then
+        deactivate
+    fi
+    
+    # Activate if we find a venv
+    if [[ -f "env/bin/activate" ]]; then
+        source env/bin/activate
+    elif [[ -f "venv/bin/activate" ]]; then
+        source venv/bin/activate
+    fi
+}
+
+# Check on startup
+if [[ -f "env/bin/activate" ]]; then
+    source env/bin/activate
+elif [[ -f "venv/bin/activate" ]]; then
+    source venv/bin/activate
+fi

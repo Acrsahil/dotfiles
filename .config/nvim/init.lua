@@ -42,6 +42,8 @@ require('lazy').setup {
   --require 'plugins.neo-tree',
   --require 'plugins.bufferline',
 
+  require 'plugins.ai',
+  require 'plugins.django',
   require 'plugins.lualine',
   require 'plugins.dadbod',
   require 'plugins.treesitter',
@@ -167,7 +169,7 @@ vim.api.nvim_create_autocmd('BufWritePost', {
   pattern = '*.dart',
   callback = function()
     -- Check if Flutter tools client is attached
-    for _, client in ipairs(vim.lsp.get_active_clients { bufnr = 0 }) do
+    for _, client in ipairs(vim.lsp.get_clients { bufnr = 0 }) do
       if client.name == 'dartls' then
         vim.cmd 'FlutterReload'
         break
@@ -175,3 +177,19 @@ vim.api.nvim_create_autocmd('BufWritePost', {
     end
   end,
 })
+
+local api = vim.api
+
+local function safe_harpoon_select(index)
+  local win = api.nvim_get_current_win()
+  local winfixbuf = vim.wo.winfixbuf
+  if winfixbuf then
+    vim.wo.winfixbuf = false
+  end
+
+  require('harpoon.ui').nav_file(index)
+
+  if winfixbuf then
+    vim.wo.winfixbuf = true
+  end
+end
