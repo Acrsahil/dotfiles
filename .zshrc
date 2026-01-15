@@ -76,6 +76,9 @@ alias dcode="./dcode.sh"
 alias sshaws="cd ~/Downloads && ssh -i \"mykeypair.pem\" ubuntu@ec2-34-224-99-240.compute-1.amazonaws.com"
 alias nano="nvim"
 alias 'sudo nano'="nvim"
+alias till='cd ~/Documents/codehub/Mount_Bill/' 
+alias pyserver='till && cd mount_django && python manage.py runserver'
+
 
 # ========== Terminal Instance Script ==========
 TERM_INSTANCE_FILE="/tmp/term_instance_count"
@@ -86,7 +89,7 @@ else
     count=1
 fi
 echo "$count" > "$TERM_INSTANCE_FILE"
-if [[ "$count" -eq 2 && -x "$HOME/hyprlandtoggle/togglescript.sh" ]]; then
+if [[ "$count" -eq 1 && -x "$HOME/hyprlandtoggle/togglescript.sh" ]]; then
     "$HOME/hyprlandtoggle/togglescript.sh"
 fi
 
@@ -187,7 +190,19 @@ export NVM_DIR="$HOME/.nvm"
 
 # ========== Auto Python venv ==========
 autoload -U add-zsh-hook
+
 auto_venv() {
+    # Check if we're currently in a virtual environment
+    if [[ -n "$VIRTUAL_ENV" ]]; then
+        # Get the parent directory of the virtual environment
+        local venv_parent=$(dirname "$VIRTUAL_ENV")
+        # If we're no longer in that directory tree, deactivate
+        if [[ "$PWD" != "$venv_parent"* ]]; then
+            deactivate
+        fi
+    fi
+    
+    # Try to activate a virtual environment if one exists
     if [[ -f env/bin/activate ]]; then
         source env/bin/activate
     elif [[ -f venv/bin/activate ]]; then
@@ -196,4 +211,4 @@ auto_venv() {
 }
 add-zsh-hook chpwd auto_venv
 auto_venv
-
+export XDG_DATA_DIRS="/var/lib/flatpak/exports/share:$HOME/.local/share/flatpak/exports/share:$XDG_DATA_DIRS"

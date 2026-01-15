@@ -26,5 +26,5 @@ After installation, restart your terminal or run `exec zsh` to start using your 
 - Terminal Tools: fzf, fd, bat, lsd
 - Editor: neovim with tmux
 - Development: nodejs, npm, python, pip, nvm, clang
-- Utilities: unzip, zip, wget, curl
+- Utilities: unzip, zip, wget, curl, yazi
 - Plugins: Tmux Plugin Manager, zsh-vi-mode

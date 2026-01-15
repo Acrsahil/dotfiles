@@ -9,7 +9,10 @@ echo "Starting dotfiles installation..."
 
 # Install core packages
 echo "Installing core packages..."
-sudo pacman -S --needed git stow zsh starship zsh-autosuggestions zsh-syntax-highlighting fzf fd bat tmux neovim base-devel nodejs npm python python-pip unzip zip wget curl clang qt5-base lsd
+sudo pacman -S --needed git stow zsh starship zsh-autosuggestions zsh-syntax-highlighting fzf fd bat tmux neovim base-devel nodejs npm python python-pip unzip zip wget yazi curl clang qt5-base lsd
+
+#Permission to tmux
+chmod +x tmux-session.sh
 
 # Install yay if not present
 echo "Checking for yay AUR helper..."
