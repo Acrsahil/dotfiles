@@ -2,16 +2,6 @@
 
 This directory contains the dotfiles for my system.
 
-## Requirements
-
-Ensure you have the following installed on your system:
-
-Git and Stow
-
-```bash
-sudo pacman -S git stow --needed
-```
-
 ## Installation
 
 First, check out the dotfiles repo in your $HOME directory using git:
@@ -25,7 +15,7 @@ Then run the following installation script:
 
 ```bash
 # Install core packages, AUR helper, and all AUR packages in one command
-sudo pacman -S --needed zsh starship fzf fd bat tmux neovim base-devel nodejs npm python python-pip yarn unzip zip wget curl clang qt5-base google-chrome lsd eza git base-devel && \
+sudo pacman -S --needed git stow zsh starship fzf fd bat tmux neovim base-devel nodejs npm python python-pip yarn unzip zip wget curl clang qt5-base google-chrome lsd eza && \
 
 # Install yay if not present
 if ! command -v yay &>/dev/null; then git clone https://aur.archlinux.org/yay.git ~/yay && cd ~/yay && makepkg -si && cd ..; fi && \
