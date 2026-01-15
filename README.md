@@ -15,7 +15,7 @@ Then run the following installation script:
 
 ```bash
 # Install core packages, AUR helper, and all AUR packages in one command
-sudo pacman -S --needed git stow zsh starship fzf fd bat tmux neovim base-devel nodejs npm python python-pip yarn unzip zip wget curl clang qt5-base google-chrome lsd eza && \
+sudo pacman -S --needed git stow zsh starship zsh-autosuggestions zsh-syntax-highlighting fzf fd bat tmux neovim base-devel nodejs npm python python-pip yarn unzip zip wget curl clang qt5-base  lsd eza && \
 
 # Install yay if not present
 if ! command -v yay &>/dev/null; then git clone https://aur.archlinux.org/yay.git ~/yay && cd ~/yay && makepkg -si && cd ..; fi && \
@@ -47,10 +47,9 @@ After installation, restart your terminal or run `exec zsh` to start using your 
 
 ## What Gets Installed
 
-- Shell: zsh with starship prompt
+- Shell: zsh with starship prompt, autosuggestions, and syntax highlighting
 - Terminal Tools: fzf, fd, bat, lsd, eza
 - Editor: neovim with tmux
 - Development: nodejs, npm, python, pip, yarn, nvm, clang
 - Utilities: unzip, zip, wget, curl
-- Browser: Google Chrome
 - Plugins: Tmux Plugin Manager, zsh-vi-mode
