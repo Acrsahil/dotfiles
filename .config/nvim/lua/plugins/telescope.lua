@@ -2,6 +2,7 @@
 return {
   'nvim-telescope/telescope.nvim',
   branch = '0.1.x',
+  event = 'VeryLazy', -- ADD THIS: Load after treesitter
   dependencies = {
     'nvim-lua/plenary.nvim',
     -- Fuzzy Finder Algorithm which requires local dependencies to be built.
@@ -26,6 +27,10 @@ return {
 
     require('telescope').setup {
       defaults = {
+        -- DISABLE TREESITTER IN PREVIEW TO FIX ERROR
+        preview = {
+          treesitter = false, -- ADD THIS LINE
+        },
         mappings = {
           i = {
             ['<C-k>'] = actions.move_selection_previous, -- move to prev result
@@ -36,6 +41,11 @@ return {
             ['q'] = actions.close,
           },
         },
+        path_display = {
+          filename_first = {
+            reverse_directories = true,
+          },
+        },
       },
       pickers = {
         find_files = {
@@ -43,9 +53,7 @@ return {
           hidden = true,
         },
         buffers = {
-          --initial_mode = 'normal',
           sort_lastused = true,
-          -- sort_mru = true,
           mappings = {
             n = {
               ['d'] = actions.delete_buffer,
@@ -53,25 +61,17 @@ return {
             },
           },
         },
-      },
-      live_grep = {
-        file_ignore_patterns = { 'node_modules', '.git', '.venv' },
-        additional_args = function(_)
-          return { '--hidden' }
-        end,
-      },
-      path_display = {
-        filename_first = {
-          reverse_directories = true,
+        live_grep = {
+          file_ignore_patterns = { 'node_modules', '.git', '.venv' },
+          additional_args = function(_)
+            return { '--hidden' }
+          end,
         },
       },
       extensions = {
         ['ui-select'] = {
           require('telescope.themes').get_dropdown(),
         },
-      },
-      git_files = {
-        previewer = false,
       },
     }
 
@@ -98,7 +98,7 @@ return {
       builtin.lsp_document_symbols {
         symbols = { 'Class', 'Function', 'Method', 'Constructor', 'Interface', 'Module', 'Property' },
       }
-    end, { desc = '[S]each LSP document [S]ymbols' })
+    end, { desc = '[S]earch LSP document [S]ymbols' })
     vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
     vim.keymap.set('n', '<leader>s/', function()
       builtin.live_grep {
@@ -107,7 +107,6 @@ return {
       }
     end, { desc = '[S]earch [/] in Open Files' })
     vim.keymap.set('n', '<leader>g/', function()
-      -- You can pass additional configuration to telescope to change theme, layout, etc.
       builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
         previewer = false,
       })

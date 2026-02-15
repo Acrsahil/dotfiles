@@ -4,6 +4,8 @@ require 'core.keymaps' -- Load general keymaps
 require 'core.options'
 
 -- Enable line numbers and hybrid mode by default
+-- Temporary fix for telescope treesitter issue
+vim.g.telescope_disable_ts_highlighter = 1
 
 vim.opt.showtabline = 0
 vim.opt.number = true
@@ -38,6 +40,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 -- Plugin setup
 require('lazy').setup {
+  require 'plugins.treesitter',
   require 'plugins.colortheme',
   --require 'plugins.neo-tree',
   --require 'plugins.bufferline',
@@ -46,7 +49,6 @@ require('lazy').setup {
   require 'plugins.django',
   require 'plugins.lualine',
   require 'plugins.dadbod',
-  require 'plugins.treesitter',
   require 'plugins.telescope',
   require 'plugins.lsp',
   require 'plugins.none-ls',
@@ -85,7 +87,7 @@ vim.cmd [[
 
 -- Setup catppuccin with highlight overrides
 require('catppuccin').setup {
-  flavour = 'mocha',              -- or "latte", "frappe", "macchiato"
+  flavour = 'mocha', -- or "latte", "frappe", "macchiato"
   transparent_background = false, -- set true if you use transparency
   term_colors = true,
   integrations = {
@@ -109,7 +111,7 @@ require('catppuccin').setup {
   custom_highlights = function(colors)
     return {
       -- Line numbers
-      LineNr = { fg = colors.text },                    -- Normal line number (peach)
+      LineNr = { fg = colors.text }, -- Normal line number (peach)
       CursorLineNr = { fg = colors.blue, bold = true }, -- Current line number (bright blue)
 
       -- Cursor line background

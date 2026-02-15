@@ -10,6 +10,14 @@ return {
       'saghen/blink.cmp',
     },
     config = function()
+      -- IMPORTANT: Load treesitter BEFORE LSP configs
+      local ok, _ = pcall(require, 'nvim-treesitter.configs')
+      if not ok then
+        vim.defer_fn(function()
+          vim.notify('Waiting for treesitter to load...', vim.log.levels.INFO)
+        end, 100)
+      end
+
       -- Keymaps and LSP attach handlers
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
@@ -91,8 +99,9 @@ return {
         (pcall(require, 'blink.cmp') and require('blink.cmp').get_lsp_capabilities()) or {}
       )
 
-      -- LSP servers config
+      -- LSP servers config - ADD C/C++ HERE!
       local servers = {
+        -- Lua LSP
         lua_ls = {
           settings = {
             Lua = {
@@ -114,7 +123,22 @@ return {
           },
         },
 
-        -- Django/Python LSP Servers
+        -- C/C++ LSP - ADD THIS SECTION
+        clangd = {
+          cmd = {
+            "clangd",
+            "--background-index",
+            "--clang-tidy",
+            "--header-insertion=iwyu",
+            "--completion-style=detailed",
+            "--function-arg-placeholders",
+            "--fallback-style=llvm"
+          },
+          filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
+          capabilities = capabilities,
+        },
+
+        -- Python LSP
         pyright = {
           settings = {
             python = {
@@ -134,12 +158,18 @@ return {
           filetypes = { 'html', 'htmldjango' },
         },
 
+        -- CSS LSP
         cssls = {},
+
+        -- TypeScript/JavaScript LSP
         tsserver = {},
+
+        -- Emmet LSP
         emmet_ls = {
           filetypes = { 'html', 'css', 'javascript', 'typescriptreact', 'javascriptreact', 'htmldjango' },
         },
 
+        -- Dart LSP
         dartls = {
           cmd = { '/opt/dart-sdk/bin/dart', 'language-server', '--protocol=lsp' },
           filetypes = { 'dart' },
@@ -153,11 +183,14 @@ return {
         },
       }
 
-      -- Tools to ensure installed with Mason
+      -- Tools to ensure installed with Mason - ADD C/C++ TOOLS
       local tools = {
         'stylua',
         'prettier',
         'eslint_d',
+        -- C/C++ tools
+        'clangd',
+        'clang-format',
         -- Django/Python tools
         'pyright',
         'djlint',
@@ -201,6 +234,19 @@ return {
           vim.bo.shiftwidth = 4
           vim.bo.softtabstop = 4
           vim.bo.expandtab = true
+        end,
+      })
+
+      -- C/C++ specific settings
+      vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
+        pattern = { '*.cpp', '*.cc', '*.cxx', '*.c', '*.h', '*.hpp', '*.hh', '*.hxx' },
+        callback = function()
+          vim.bo.tabstop = 2
+          vim.bo.shiftwidth = 2
+          vim.bo.softtabstop = 2
+          vim.bo.expandtab = true
+          vim.bo.cindent = true
+          vim.bo.cinoptions = vim.bo.cinoptions .. ':g0'
         end,
       })
     end,

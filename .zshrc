@@ -191,24 +191,75 @@ export NVM_DIR="$HOME/.nvm"
 # ========== Auto Python venv ==========
 autoload -U add-zsh-hook
 
-auto_venv() {
-    # Check if we're currently in a virtual environment
-    if [[ -n "$VIRTUAL_ENV" ]]; then
-        # Get the parent directory of the virtual environment
-        local venv_parent=$(dirname "$VIRTUAL_ENV")
-        # If we're no longer in that directory tree, deactivate
-        if [[ "$PWD" != "$venv_parent"* ]]; then
-            deactivate
+
+# ========== Auto Python venv ==========
+_find_env_dir() {
+    local dir="$PWD"
+    while [[ "$dir" != "/" ]]; do
+        # Check for env/bin/activate
+        if [[ -f "$dir/env/bin/activate" ]]; then
+            echo "$dir/env"
+            return 0
         fi
+        # Also check for venv/bin/activate (common alternative)
+        if [[ -f "$dir/venv/bin/activate" ]]; then
+            echo "$dir/venv"
+            return 0
+        fi
+        dir="$(dirname "$dir")"
+    done
+    return 1
+}
+
+auto_venv_parent() {
+    local env_path="$(_find_env_dir)"
+    local current_env="$VIRTUAL_ENV"
+
+    # Case 1: Found env and not currently in any venv -> activate
+    if [[ -n "$env_path" && -z "$current_env" ]]; then
+        source "$env_path/bin/activate"
+        echo "🐍 venv ON → $(basename "$env_path")"
+        return 0
     fi
-    
-    # Try to activate a virtual environment if one exists
-    if [[ -f env/bin/activate ]]; then
-        source env/bin/activate
-    elif [[ -f venv/bin/activate ]]; then
-        source venv/bin/activate
+
+    # Case 2: Found env but different from current active one -> switch
+    if [[ -n "$env_path" && -n "$current_env" && "$current_env" != "$env_path" ]]; then
+        deactivate 2>/dev/null
+        source "$env_path/bin/activate"
+        echo "🔁 venv SWITCH → $(basename "$env_path")"
+        return 0
+    fi
+
+    # Case 3: No env found but venv is active -> deactivate
+    if [[ -z "$env_path" && -n "$current_env" ]]; then
+        deactivate 2>/dev/null
+        return 0
+    fi
+
+    # Case 4: Already in the correct venv -> do nothing
+    if [[ -n "$env_path" && -n "$current_env" && "$current_env" == "$env_path" ]]; then
+        return 0
     fi
 }
-add-zsh-hook chpwd auto_venv
-auto_venv
+
+# Hook into directory changes
+autoload -U add-zsh-hook
+add-zsh-hook chpwd auto_venv_parent
+
+# Run once when shell starts
+auto_venv_parent
+
+killallport() {
+    ports=(3000 5173 8000 8080 5000)
+    for p in "${ports[@]}"; do
+        if sudo fuser -k "$p"/tcp 2>/dev/null; then
+            echo " Killed port $p"
+        fi
+    done
+}
+
+
+
+# add-zsh-hook chpwd 
 export XDG_DATA_DIRS="/var/lib/flatpak/exports/share:$HOME/.local/share/flatpak/exports/share:$XDG_DATA_DIRS"
+source /home/hitler/Auto-Git/alias.sh
